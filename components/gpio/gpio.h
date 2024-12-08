@@ -5,10 +5,10 @@
 struct component_gpio{
     uint16_t id;
 };
+typedef struct component_gpio component_gpio;
 
 #ifdef MAX_GPIOS
 
-typedef struct component_gpio component_gpio;
 
 
 extern int8_t hardware_init_gpio(const uint16_t id);
