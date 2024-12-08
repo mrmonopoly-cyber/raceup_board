@@ -3,13 +3,16 @@
 
 #include <stdint.h>
 
+#include "./gpio/gpio.h"
 enum COMPONENT_INDEX {
+	GPIO,
 };
 
 
 typedef struct RaceupBoardComponent {
     enum COMPONENT_INDEX comp_type;
     union{
+component_gpio gpio;
     }comps;
 }RaceupBoardComponent;
 
