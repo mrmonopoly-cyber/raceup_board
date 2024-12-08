@@ -16,8 +16,8 @@ static struct{
     component_can cans[MAX_CANS];
 #endif //!MAX_CANS 
 #ifdef MAX_TIMERS
-    component_can cans[MAX_CANS];
-#endif //!MAX_CANS 
+    component_timer timers[MAX_TIMERS];
+#endif //!MAX_TIMERS 
 }virtual_board;
 
 #endif // !__RACEUP_BOARD__
