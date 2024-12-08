@@ -8,5 +8,6 @@ CompileFlags:
     -Wno-gnu-folding-constant,
     -Wno-c23-extensions,
     -Wno-empty-translation-unit
+    -DMAX_GPIOS
 
   ]

@@ -5,8 +5,16 @@
 
 #include "./components/component.h"
 
-int raceup_board_init(void);
-int raceup_board_add_component(const RaceupBoardComponent* component);
-int raceup_board_main(int argc, char* argv[]);
+static struct{
+#ifdef MAX_SERIALS
+    component_serial serial[MAX_SERIALS];
+#endif //!MAX_SERIALS 
+#ifdef MAX_GPIOS
+    component_gpio gpios[MAX_GPIOS];
+#endif //!MAX_GPIOS 
+#ifdef MAX_CANS
+    component_can cans[MAX_CANS];
+#endif //!MAX_CANS 
+}virtual_board;
 
 #endif // !__RACEUP_BOARD__

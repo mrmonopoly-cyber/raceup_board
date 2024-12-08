@@ -3,19 +3,13 @@
 
 #include <stdint.h>
 
+#ifdef MAX_SERIALS
+#include "./serial/serial.h"
+#endif //!MAX_SERIALS 
+#ifdef MAX_GPIOS
 #include "./gpio/gpio.h"
-enum COMPONENT_INDEX {
-	GPIO,
-};
-
-
-typedef struct RaceupBoardComponent {
-    enum COMPONENT_INDEX comp_type;
-    union{
-component_gpio gpio;
-    }comps;
-}RaceupBoardComponent;
-
-int8_t init_new_component(RaceupBoardComponent* comp, enum COMPONENT_INDEX comp_index);
-
+#endif //!MAX_GPIOS 
+#ifdef MAX_CANS
+#include "./can/can.h"
+#endif //!MAX_CANS 
 #endif // !__RACEUP_BOARD_COMPONENT__

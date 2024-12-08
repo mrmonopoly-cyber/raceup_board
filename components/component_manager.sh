@@ -1,7 +1,6 @@
 #!/bin/sh
  
 component_file_h=./component.h
-component_file_c=./component.c
 
 help() {
     echo "usage: $0 [command] \<args\>";
@@ -17,42 +16,39 @@ if [ ! -f ./component.h -o ! -f ./component_manager.sh -o ! -d ./.dummy  ]; then
     exit -1
 fi
 
+name=$2
+upp_case=$(echo $name | tr a-z A-Z)
+
 case $1 in
     "add")
-        name=$2
-        upp_case=$(echo $name | tr a-z A-Z)
         if [ -z $name ]; then
             echo "invalid input name, name must be non empty"
             exit -1
         fi
         cp -r ./.dummy ./$name
         mv ./$name/dummy.h ./$name/$name.h
-        mv ./$name/dummy.c ./$name/$name.c
         sed -i "s/dummy/$name/g" $name/$name.h
         sed -i "s/DUMMY/${upp_case}/g" $name/$name.h
-        sed -i "s/dummy/$name/g" $name/$name.c
 
-        sed -i "s/enum COMPONENT_INDEX {/&\n\\t$upp_case,/" "$component_file_h"
-
-        sed -i "/enum COMPONENT_INDEX {/i #include \"./$name/$name.h\"" "$component_file_h"
-        sed -i "/}comps;/i component_$name $name;" "$component_file_h"
-
-
-        sed -i "/default:/i case ${upp_case}: return init_new_${name}_component\(&comp->comps.$name\);" "$component_file_c"
-
+        sed -i "/#endif \/\/ !__RACEUP_BOARD_COMPONENT__/i\
+        #ifdef MAX_${upp_case}S \n#include \"./${name}/${name}.h\"\n#endif \/\/!${upp_case}S"\
+        "$component_file_h"
         ;;
     "del")
-        name=$2
         if [ -z $name ]; then
             echo "invalid input name, name must be non empty"
             exit -1
         fi
         rm -rf ./$name
+        sed -i "/#ifdef MAX_${upp_case}S/d" "$component_file_h"
+        sed -i "/#include \".\/${name}\/${name}.h\"/d" "$component_file_h"
+        sed -i "/#include \".\/${name}\/${name}.h\"/d" "$component_file_h"
+        sed -i "/#endif \/\/!${upp_case}S/d" "$component_file_h"
         ;;
     "delall")
         cmps=$(./component_manager.sh lst)
         for item in $cmps; do
-            rm -rf $item
+            ./component_manager.sh del $item
         done
         ;;
     "lst") 
