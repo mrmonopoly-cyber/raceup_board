@@ -12,4 +12,7 @@
 #ifdef MAX_CANS
 #include "./can/can.h"
 #endif //!MAX_CANS 
+#ifdef MAX_TIMERS 
+#include "./timer/timer.h"
+#endif //!MAX_TIMERS
 #endif // !__RACEUP_BOARD_COMPONENT__
