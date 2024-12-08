@@ -31,7 +31,7 @@ case $1 in
         sed -i "s/DUMMY/${upp_case}/g" $name/$name.h
 
         sed -i "/#endif \/\/ !__RACEUP_BOARD_COMPONENT__/i\
-        #ifdef MAX_${upp_case}S \n#include \"./${name}/${name}.h\"\n#endif \/\/!${upp_case}S"\
+        #ifdef MAX_${upp_case}S \n#include \"./${name}/${name}.h\"\n#endif \/\/!MAX_${upp_case}S"\
         "$component_file_h"
         ;;
     "del")
@@ -43,7 +43,7 @@ case $1 in
         sed -i "/#ifdef MAX_${upp_case}S/d" "$component_file_h"
         sed -i "/#include \".\/${name}\/${name}.h\"/d" "$component_file_h"
         sed -i "/#include \".\/${name}\/${name}.h\"/d" "$component_file_h"
-        sed -i "/#endif \/\/!${upp_case}S/d" "$component_file_h"
+        sed -i "/#endif \/\/!MAX_${upp_case}S/d" "$component_file_h"
         ;;
     "delall")
         cmps=$(./component_manager.sh lst)
