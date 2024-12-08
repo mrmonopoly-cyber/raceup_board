@@ -35,10 +35,10 @@ case $1 in
         sed -i "s/enum COMPONENT_INDEX {/&\n\\t$upp_case,/" "$component_file_h"
 
         sed -i "/enum COMPONENT_INDEX {/i #include \"./$name/$name.h\"" "$component_file_h"
-        sed -i "/}RaceupBoardComponent;/i component_$name $name;" "$component_file_h"
+        sed -i "/}comps;/i component_$name $name;" "$component_file_h"
 
 
-        sed -i "/default:/i case ${upp_case}: return init_new_${name}_component\(&comp->$name\);" "$component_file_c"
+        sed -i "/default:/i case ${upp_case}: return init_new_${name}_component\(&comp->comps.$name\);" "$component_file_c"
 
         ;;
     "del")

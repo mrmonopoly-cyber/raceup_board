@@ -7,7 +7,10 @@ enum COMPONENT_INDEX {
 };
 
 
-typedef union RaceupBoardComponent {
+typedef struct RaceupBoardComponent {
+    enum COMPONENT_INDEX comp_type;
+    union{
+    }comps;
 }RaceupBoardComponent;
 
 int8_t init_new_component(RaceupBoardComponent* comp, enum COMPONENT_INDEX comp_index);
