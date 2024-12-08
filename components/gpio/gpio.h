@@ -1,10 +1,14 @@
-#ifdef MAX_GPIOS
+#ifndef __VIRTUA_GPIO__
+#define __VIRTUA_GPIO__
 
 #include <stdint.h>
-
-typedef struct component_gpio{
+struct component_gpio{
     uint16_t id;
-}component_gpio;
+};
+
+#ifdef MAX_GPIOS
+
+typedef struct component_gpio component_gpio;
 
 
 extern int8_t hardware_init_gpio(const uint16_t id);
@@ -21,3 +25,4 @@ extern int8_t gpio_set_high(const component_gpio* const restrict comp);
 extern int8_t gpio_set_low(const component_gpio* const restrict comp);
 
 #endif //!MAX_GPIOS 
+#endif // !__VIRTUA_GPIO__

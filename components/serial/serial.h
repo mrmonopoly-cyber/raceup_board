@@ -1,10 +1,13 @@
-#ifdef MAX_SERIALS
+#ifndef __VIRTUA__SERIAL__
+#define __VIRTUA__SERIAL__
 
 #include <stdint.h>
-
-typedef struct component_serial{
+struct component_serial{
     uint16_t id;
-}component_serial;
+};
+#ifdef MAX_SERIALS
+
+typedef struct component_serial component_serial;
 
 extern int8_t hardware_init_serial(const uint16_t id);
 int8_t init_new_serial_component(component_serial* const restrict comp, const uint16_t id)
@@ -19,3 +22,4 @@ extern int8_t serial_write(const component_serial* const restrict self, uint8_t*
        const uint32_t buffer_size);
 
 #endif //!MAX_SERIALS 
+#endif // !__VIRTUA__SERIAL__
