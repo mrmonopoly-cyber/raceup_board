@@ -1,6 +1,7 @@
 #!/bin/sh
  
-component_file_h=./component.h
+component_file_h=./components/component.h
+dummy_file="./components/.dummy/dummy.h"
 
 help() {
     echo "usage: $0 [command] \<args\>";
@@ -11,8 +12,8 @@ help() {
     echo -e "\t lst: list all existing components"
 }
 
-if [ ! -f ./component.h -o ! -f ./component_manager.sh -o ! -d ./.dummy  ]; then
-    echo "run the script inside of the raceup_board/components directory"
+if [ ! -d ./components -o ! -f ./component_manager.sh ]; then
+    echo "run the script inside of the project root directory"
     exit -1
 fi
 
@@ -25,13 +26,11 @@ case $1 in
             echo "invalid input name, name must be non empty"
             exit -1
         fi
-        cp -r ./.dummy ./$name
-        mv ./$name/dummy.h ./$name/$name.h
-        sed -i "s/dummy/$name/g" $name/$name.h
-        sed -i "s/DUMMY/${upp_case}/g" $name/$name.h
+        cp -r $dummy_file ./components/${name}.h
+        sed -i "s/dummy/$name/g" ./components/$name.h
+        sed -i "s/DUMMY/${upp_case}/g" ./components/$name.h
 
-        sed -i "/#endif \/\/ !__RACEUP_BOARD_COMPONENT__/i\
-        #ifdef MAX_${upp_case}S \n#include \"./${name}/${name}.h\"\n#endif \/\/!MAX_${upp_case}S"\
+        sed -i "/#endif \/\/ !__RACEUP_BOARD_COMPONENT__/i\#include \"${name}.h\""\
         "$component_file_h"
         ;;
     "del")
@@ -39,11 +38,8 @@ case $1 in
             echo "invalid input name, name must be non empty"
             exit -1
         fi
-        rm -rf ./$name
-        sed -i "/#ifdef MAX_${upp_case}S/d" "$component_file_h"
-        sed -i "/#include \".\/${name}\/${name}.h\"/d" "$component_file_h"
-        sed -i "/#include \".\/${name}\/${name}.h\"/d" "$component_file_h"
-        sed -i "/#endif \/\/!MAX_${upp_case}S/d" "$component_file_h"
+        rm -rf ./components/$name.h
+        sed -i "/#include \"${name}.h\"/d" "$component_file_h"
         ;;
     "delall")
         cmps=$(./component_manager.sh lst)
@@ -52,7 +48,7 @@ case $1 in
         done
         ;;
     "lst") 
-        /bin/ls -d */ 2>/dev/null | cut -d'/' -f1
+        /bin/ls ./components | grep -v "common_idx" | cut -d '.' -f1
         ;;
     *)
         help;
